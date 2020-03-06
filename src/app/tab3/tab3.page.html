@@ -1,0 +1,50 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Liste Coupons
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!-- <ion-content [fullscreen]="true">
+  <ion-card >
+    <ion-item>
+      <ion-icon name="happy" slot="start"></ion-icon>
+      
+      <ion-img src="https://d4e7wxbvl20c1.cloudfront.net/images.printconcept.com/blog/Kortingsbonnen/coupon5FR.gif"></ion-img>
+      <ion-button fill="outline" slot="end" routerLink="coupon">Voir coupon</ion-button>
+    </ion-item>
+  
+    <ion-card-content>
+      - 15 € chez INTERSPORT du 02/03/2020 - 23/04/2020
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card >
+    <ion-item>
+      <ion-icon name="happy" slot="start"></ion-icon>
+      
+      <ion-img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQZGqkzn3YTIf7_3bgl4QxfIZtKIu8lIx6-naKe2bpM1u2IP_rH"></ion-img>
+      <ion-button fill="outline" slot="end" routerLink="coupon">Voir coupon</ion-button>
+    </ion-item>
+  
+    <ion-card-content>
+      - 6 € chez LU du 02/03/2020 - 23/04/2020
+    </ion-card-content>
+  </ion-card>
+</ion-content> -->
+
+<ion-content [fullscreen]="true">
+  <ion-card *ngFor="let coupon of couponList">
+    <ion-item>
+      <ion-icon name="happy" slot="start"></ion-icon>
+      
+      <ion-label></ion-label>
+      <ion-button fill="outline" slot="end" [routerLink]="['coupon',coupon.code]"></ion-button>
+    </ion-item>
+  
+    <ion-card-content>
+  
+    </ion-card-content>
+  </ion-card>
+</ion-content>

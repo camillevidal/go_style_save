@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Détail coupon</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card no-margin>
+    <ion-card-header>
+      <ion-card-title>
+        {{description}}
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      
+    </ion-card-content>
+  </ion-card>
+
+  <ion-list lines="none">
+    <ion-item>
+      <ion-label>Date de début</ion-label>
+      <ion-chip>{{dateDebut}}</ion-chip>
+    </ion-item>
+    <ion-item>
+      <ion-label>Date de validité</ion-label>
+      <ion-chip>{{dateDebut}} - {{dateFin}}</ion-chip>
+    </ion-item>
+    <ion-item>
+      <ion-label></ion-label>
+      <ion-chip></ion-chip>
+    </ion-item>
+    <ion-item>
+      <ion-label>Nombre d'utilisation</ion-label>
+      <ion-chip></ion-chip>
+
+    </ion-item>
+
+  </ion-list>
+
+</ion-content>
+
+
+   
