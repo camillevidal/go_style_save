@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title color="warning">Login</ion-title>
+    <ion-title color="warning" id="login">Login</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -12,7 +12,7 @@
 
           <ion-item>
             <ion-label  position="floating" color="dark" >E-mail</ion-label>
-            <ion-input color="dark" type="text" formControlName="email"></ion-input>
+            <ion-input id="inputLogin" color="dark" type="text" formControlName="email"></ion-input>
           </ion-item>
           <div class="validation-errors">
             <ng-container *ngFor="let validation of validation_messages.email">
@@ -34,7 +34,7 @@
             </ng-container>
           </div>
       
-          <ion-button   class="submit-btn" type="submit"  [disabled]="!validations_form.valid" (click)="loginUser()">Log In</ion-button>
+          <ion-button  id="btn-connect" class="submit-btn" type="submit"  [disabled]="!validations_form.valid" (click)="loginUser()">Log In</ion-button>
           <label class="error-message">{{errorMessage}}</label>
         </form>
         <p class="go-to-register">

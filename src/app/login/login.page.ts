@@ -50,32 +50,28 @@ export class LoginPage implements OnInit {
 
   loginUser() {
     let email = this.validations_form.get('email').value
-    console.log("email--------------",email)
-    
-
     let password = this.validations_form.get('password').value
-    
     var hash = sha256.create();
     hash.update(password);
     hash.hex();
-    console.log("pass--------------",hash.toString())
     this.userService.login(email).subscribe(value => {
       this.user = value
       console.log("user----",this.user)
       console.log(this.user.password == hash.toString())
       console.log(this.user.password)
       if(this.user == null){
-        alert("NUL okaaayyyy")
+        alert("Utilisateur inconnu")
+        this.navCtrl.navigateForward('/register');
       }
       
       else if (this.user.password == hash.toString()) {
-        console.log("coucou")
         localStorage.setItem("login",email)
         this.navCtrl.navigateForward('tabs');
       }
       else{
-        alert("pas les bons identifiants okaaayyyy")
+        alert("erreur sur les identifiants")
       }
+     
     })
     
     
@@ -83,7 +79,6 @@ export class LoginPage implements OnInit {
   }
 
   goToRegisterPage() {
-    console.log("click work")
     this.navCtrl.navigateForward('/register');
   }
 

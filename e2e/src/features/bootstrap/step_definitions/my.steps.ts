@@ -1,6 +1,6 @@
 import {Before, Given, When, Then} from 'cucumber';
 import {expect} from 'chai';
-import {AppPage} from './app.po';
+import {AppPage} from '../pages/app.po';
 import { browser } from 'protractor';
 
 
@@ -12,7 +12,7 @@ Given('I am on the login page', async () => {
   await AppPage.navigateTo();
 });
 
-When('I do nothing', () => {
+When('I do nothing', async() => {
 });
 
 Then('I should see the title', async () => {
@@ -34,11 +34,10 @@ When('I write {string} in {string}', async (value,id)=>{
 When('I connect',async()=>{
   const u = AppPage.findConnectionButton()
   await u.click()
-})
-// Then('I see error',async()=>{
-//   expect(await AppPage.findError().getText()).to.equal("L'identifiant ou le mot de passe est incorrecte.")
-// })
+});
+
 Then('I see tab in url',async()=>{
+  
   expect(await AppPage.findInUrl())
   
 })

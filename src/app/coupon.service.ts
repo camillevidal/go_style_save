@@ -15,7 +15,7 @@ export class CouponService {
   //recup une seule observable activité 
   getCoupon(id: Number): Observable<Coupon> {
     console.log("okay")
-    return this.http.get<Coupon>("http://109.11.21.53:9996/api/coupon/" + id.toString()).pipe(
+    return this.http.get<Coupon>("http://109.11.21.53:9996/api/coupon/" + id.toString(),optionRequete).pipe(
       tap(data => console.log('coupon by id: ' + JSON.stringify(data))),
       catchError(this.handleError)
     );
@@ -56,7 +56,7 @@ const API = "http://109.11.21.53:9996/api/coupon/all";
 const x = btoa("user:password")
 const optionRequete = {
   headers: new HttpHeaders({ 
-    'Access-Control-Allow-Origin':'	on/xml;q=0.9,image/webp,*/*;q=0.8',
     'Authorization': 'Basic '+x
+    
     
   })};

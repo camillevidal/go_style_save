@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable} from "rxjs"
+import { Observable } from "rxjs"
 import { Coupon } from '../types';
 import { CouponService } from '../coupon.service';
 import { ActivatedRoute } from '@angular/router';
@@ -8,31 +8,36 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './coupon.page.html',
   styleUrls: ['./coupon.page.scss'],
 })
-export class CouponPage implements OnInit {
-  couponDetail:Observable <Coupon>
-  description:string
-  dateDebut:string
-  dateFin:string
-  code:Number
-  
+export class CouponPage {
+  couponDetail: Coupon
+  description: string
+  start: string
+  end: string
+  code_value: String
+  nbreUtilisation:Number
+  reduction:Number
+  devise:String
 
-  constructor(couponService:CouponService,activatedRoute:ActivatedRoute) { 
+
+  constructor(couponService: CouponService, activatedRoute: ActivatedRoute) {
     const COUPONID = activatedRoute.snapshot.params["couponId"]
-    
-    this.couponDetail = couponService.getCoupon(COUPONID)
-    this.couponDetail.forEach(element => {
-      this.description = element.description
-      this.dateDebut = element.startDate
-      this.dateFin = element.endDate
-      this.code = element.id
-      
-      
+    couponService.getCoupon(COUPONID).subscribe(res => {
+      this.code_value = res.code_value
+      this.description= res.description
+      this.start= res.startDate
+      this.end= res.endDate
+      this.nbreUtilisation = res.nbUtilisation
+      this.devise = res.devise
+      this.reduction = res.reductionAmount
     })
-    
-  }
-  
-
-  ngOnInit() {
+    // this.couponDetail.forEach(element => {
+    //   this.description = element.description
+    //   this.dateDebut = element.startDate
+    //   this.dateFin = element.endDate
+    //   this.code = element.id
   }
 
 }
+
+
+
