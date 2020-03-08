@@ -30,21 +30,25 @@ export class Tab3Page {
 		this.couponService = couponService
 		this.couponList = []
 		let currentUser = localStorage.getItem("login");
+		if(currentUser == null){
+			currentUser = "camille@mail.com"
+		  }
 		this.couponService.getCouponsByUser(currentUser).subscribe(value => {
 			this.couponByUserList = value
 			console.log("current user"+currentUser)
 			if (currentUser != "" || currentUser != null) {
 				this.couponByUserList.forEach(coupon => {
-					if (coupon.idUser == currentUser) {
-						this.idCoupon = coupon.idCoupon
-						this.couponService.getCoupon(this.idCoupon).subscribe(result => {
+					// if (coupon.idUser == currentUser) {
+					// 	this.idCoupon = coupon.idCoupon
+					// 	console.log("Id coupon : " + this.idCoupon)
+					// 	this.couponService.getCoupon(this.idCoupon).subscribe(result => {
+					// 		console.log(result)
+							this.couponList.push(coupon)
 
-							this.couponList.push(result)
 
 
-
-						})
-					}
+					// 	})
+					// }
 				})
 			}
 			
@@ -53,6 +57,7 @@ export class Tab3Page {
 				alert("erreur lors de la récupèration de l'utilisateur")
 			}
 			console.log("len"+this.couponList.length)
+			console.log(this.couponList)
 		})
 	}
 }

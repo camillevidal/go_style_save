@@ -1,0 +1,9 @@
+// ion-app.cameraView, ion-app.cameraView ion-content, ion-app.cameraView .nav-decor {
+//     background: transparent none !important;
+//     visibility: hidden;
+//   }
+
+ion-app.cameraView #background-content, ion-app.cameraView, ion-app.cameraView ion-content{
+    background: transparent none !important;
+    visibility: hidden;
+  }

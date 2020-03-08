@@ -4,16 +4,16 @@
       Scan QR code
     </ion-title>
     <ion-buttons slot="start">
-      <ion-button *ngIf="showCamera" (click)="closeCamera()">
+      <ion-button *ngIf="showCamera" (click)="closeCamera()" style="color:red">
         <ion-icon name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding style="background: none transparent;">
+<ion-content padding>
   <div *ngIf="showCamera">
-    <ion-icon class="frame" name="qr-scanner"></ion-icon>
+    <ion-icon id="qrlogo" class="frame" name="qr-scanner" style="color: red;"></ion-icon>
     <!-- <img id ="qrScannerCarre" src="../../assets/images/qrCarre.png" alt="qrScanner"> -->
     <!-- <button id="scanQrButton" ion-button full icon-left (click)="scanCode()"> -->
     <ion-button shape="round" id="light" icon-left (click)="addLight()">
@@ -30,7 +30,7 @@
       </ion-card-content>
     </ion-card> -->
     <ion-card *ngIf="coupons?.length <= 0">
-      <ion-item ><a>Vous n'avez aucun code enregistré pour le moment.</a></ion-item>
+      <ion-item ><a>Vous n'avez aucun code pour le moment.</a></ion-item>
     </ion-card>
     <ion-card *ngIf="coupons?.length > 0" >
       <ion-item ng-repeat="coupon in coupons">
@@ -42,5 +42,6 @@
         <br/>
       </ion-item>
     </ion-card>
+    <div *ngIf="scannedCode"><a>{{scannedCode.result}}</a></div>
   </div>
 </ion-content>
