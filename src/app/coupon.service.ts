@@ -30,13 +30,19 @@ export class CouponService {
       catchError(this.handleError)
     );
   }
-  getCouponsByUser(): Observable<CouponByUser[]> {
-    return this.http.get<CouponByUser[]>("http://109.11.21.53:9996/api/couponbyuser/all",optionRequete ).pipe(
+  getCouponsByUser(userId): Observable<CouponByUser[]> {
+    return this.http.get<CouponByUser[]>("http://109.11.21.53:9996/api/coupon/spec/"+userId,optionRequete ).pipe(
       tap(data => console.log('All coupons by user: ' + JSON.stringify(data))),
       catchError(this.handleError)
     )
 
   }
+
+  addCouponByuser(idUser, idCoupon): Observable<CouponByUser[]> {
+    return this.http.post<CouponByUser[]>("http://109.11.21.53:9996/api/couponbyuser/add?idUser="+idUser+"&idCoupon="+idCoupon,({}));
+  }
+
+
 
   private handleError(err: HttpErrorResponse) {
 
