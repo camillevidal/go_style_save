@@ -29,9 +29,9 @@ export class Tab3Page {
 	constructor(couponService: CouponService) {
 		this.couponService = couponService
 		this.couponList = []
-		this.couponService.getCouponsByUser().subscribe(value => {
+		let currentUser = localStorage.getItem("login");
+		this.couponService.getCouponsByUser(currentUser).subscribe(value => {
 			this.couponByUserList = value
-			let currentUser = localStorage.getItem("login");
 			console.log("current user"+currentUser)
 			if (currentUser != "" || currentUser != null) {
 				this.couponByUserList.forEach(coupon => {
