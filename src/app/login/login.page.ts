@@ -56,29 +56,28 @@ export class LoginPage implements OnInit {
     var hash = sha256.create();
     hash.update(password);
     hash.hex();
-    try {
-      this.userService.login(email).subscribe(value => {
-        this.user = value
-        if (this.user == null) {
-          this.alertUserInconnu()
-          this.navCtrl.navigateForward('/tabs/register');
-        }
+    this.userService.login(email).subscribe(value => {
+      this.user = value
+      if (this.user == null) {
+        this.alertUserInconnu()
+        this.navCtrl.navigateForward('/tabs/register');
+      }
 
-        else if (this.user.password == hash.toString()) {
-          localStorage.setItem("login", email)
-          this.navCtrl.navigateForward('/tabs/tab2');
-          let hide = document.getElementById("logged")
-          hide.style.visibility = "visible"
-        }
-      })
-    }
-    catch (error) {
+      else if (this.user.password == hash.toString()) {
+        localStorage.setItem("login", email)
+        this.navCtrl.navigateForward('/tabs/tab2');
+        let hide = document.getElementById("logged")
+        hide.style.visibility = "visible"
+      }
+    },
+    error => {
       this.alertUserInconnu()
     }
 
 
-
+    );
   }
+
   async alertUserInconnu() {
     const alert = await this.alert.create({
       header: 'Alert',

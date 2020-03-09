@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
 import { CouponService } from '../coupon.service';
+import { NavController, AlertController } from '@ionic/angular';
 import { Platform } from '@ionic/angular';
 import { Coupon } from '../types';
 // import { Dialogs} from '@ionic-native/dialogs/ngx'
@@ -25,7 +26,7 @@ export class Tab2Page implements OnInit {
     coupons = [];
     couponService: CouponService
 
-    constructor(public platforme:Platform,private qrScanner: QRScanner, couponService: CouponService) {
+    constructor(public platforme:Platform,private qrScanner: QRScanner, couponService: CouponService,private navCtrl: NavController,private alert: AlertController) {
         this.showCamera = false;
         this.couponService = couponService
         this.platforme.backButton.subscribeWithPriority(0,()=>{
@@ -79,16 +80,20 @@ export class Tab2Page implements OnInit {
                     }
                     finally{
                         console.log("closing camera")
+                        this.savedCoupon()
+                        this.navCtrl.navigateForward('/tabs/tab3');
                     }
                 })
             }
             else {
                 this.scannedCode = "None";
                 this.closeCamera()
+                this.navCtrl.navigateForward('/tabs/tab3');
 
             }
 
         })
+        
     }
 
     closeCamera() {
@@ -129,10 +134,10 @@ export class Tab2Page implements OnInit {
             this.couponService.addCouponByuser(userId, couponId).subscribe(rep=>{
                 console.log(rep)
                 if(rep == "Saved"){
-                    alert("Code ajouté")
+                    //alert("Code ajouté")
                 }
                 else{
-                    alert("Impossible d'ajouter le code")
+                    //alert("Impossible d'ajouter le code")
                 }
             })
 
@@ -141,6 +146,18 @@ export class Tab2Page implements OnInit {
         catch{
             console.log("Erreur dans l'ajout du coupon")
         }
+    }
+
+    async savedCoupon(){
+        const alert = await this.alert.create({
+            header: 'Alert',
+            subHeader: 'Subtitle',
+            message: "Coupon Ajouté",
+            buttons: ['OK']
+        });
+    
+        await alert.present();
+          
     }
 
 }

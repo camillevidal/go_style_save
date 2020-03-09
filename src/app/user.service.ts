@@ -22,13 +22,7 @@ export class UserService {
   }
 
   login(email): Observable<User> {
-    let t;
-    try {
-      t = this.http.get<User>(`http://109.11.21.53:9996/api/user/${email}`, optionRequete)
-    } catch (error) {
-      throw "unknow user";
-    }
-    return t
+   return this.http.get<User>(`http://109.11.21.53:9996/api/user/${email}`, optionRequete)
   }
 
   addUser(email, fullName, password): Observable<Object> {
