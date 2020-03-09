@@ -66,7 +66,7 @@ export class LoginPage implements OnInit {
       
       else if (this.user.password == hash.toString()) {
         localStorage.setItem("login",email)
-        this.navCtrl.navigateForward('tabs');
+        this.navCtrl.navigateForward('/tabs/tab2');
       }
       else{
         alert("erreur sur les identifiants")

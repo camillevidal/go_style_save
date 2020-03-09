@@ -46,3 +46,17 @@ Then('Then I see Scanner page',async()=>{
 
 
 })
+
+Given('I am on the list page', async () => {
+  await AppPage.navigateToListpage();
+});
+Then('I should see the couponList', async () => {
+  expect(await AppPage.getCouponsListPage()).to.equal('Liste Coupons');
+});
+Then('I click on voir coupons',async()=>{
+  const u = AppPage.voirUnCoupon()
+  await u.click()
+});
+Then('I should see pas de coupons', async () => {
+  expect(await AppPage.getCouponsListPage()).to.contain('pas de coupon');
+});

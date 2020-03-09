@@ -15,4 +15,11 @@ Feature: log in app
     Then I see tab in url
     Then I see Scanner page
 
+Scenario Outline: See List
+  Given I am on the list page
+  Then I should see pas de coupons
+ 
+  
+  
+
   

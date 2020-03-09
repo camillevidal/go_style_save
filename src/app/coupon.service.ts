@@ -53,7 +53,7 @@ export class CouponService {
   }
 }
 const API = "http://109.11.21.53:9996/api/coupon/all";
-const x = btoa("user:password")
+const x = btoa("DR567Kle_i:2Kjl9-(kl")
 const optionRequete = {
   headers: new HttpHeaders({ 
     'Authorization': 'Basic '+x

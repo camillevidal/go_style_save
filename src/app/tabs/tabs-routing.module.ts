@@ -38,20 +38,32 @@ const routes: Routes = [
           {
             path: 'coupon/:couponId',
             loadChildren: () => import('../coupon/coupon.module').then( m => m.CouponPageModule)
+          },
+          {
+            path: 'coupon',
+            loadChildren: () => import('../coupon/coupon.module').then( m => m.CouponPageModule)
+          },
+          {
+            path: 'login',
+            loadChildren: () => import('../login/login.module').then( m => m.LoginPageModule)
+          },
+          {
+            path: 'register',
+            loadChildren: () => import('../register/register.module').then( m => m.RegisterPageModule)
           }
         ]
       },
      
       {
         path: '',
-        redirectTo: '/tabs/tab2',
+        redirectTo: '/tabs/login',
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/tabs/tab2',
+    redirectTo: '/tabs/login',
     pathMatch: 'full'
   }
 ];

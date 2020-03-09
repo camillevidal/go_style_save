@@ -4,6 +4,9 @@ export class AppPage {
   static navigateTo() {
     return browser.get('/login');
   }
+  static navigateToListpage(){
+    return browser.get('/tab/tab3');
+  }
 
   static getTitleLogin() {
     return element(by.id('login')).getText();
@@ -19,5 +22,14 @@ export class AppPage {
   }
   static seeScannerPage(){
     return element(by.id('hello-app'))
+  }
+  static getCouponsListPage(){
+    return element(by.id('liste-coupons'))
+  }
+  static voirUnCoupon(){
+    return element(by.class('btn-coupon-detail'))
+  }
+  static noCoupons(){
+    return element(by.class('no-coupons'))
   }
 }
