@@ -1,7 +1,7 @@
 //type checking
 // aller sur JSON TO JS
 export interface Coupon {
-    id: number;
+    code: number;
     description: string;
     devise: string;
     startDate: string;

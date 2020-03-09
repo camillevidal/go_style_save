@@ -15,12 +15,12 @@ export class CouponService {
   //recup une seule observable activité 
   getCoupon(id: Number): Observable<Coupon> {
     console.log("okay")
-    return this.http.get<Coupon>("http://109.11.21.53:9996/api/coupon/" + id.toString(),optionRequete).pipe(
+    return this.http.get<Coupon>("http://109.11.21.53:9996/api/coupon/" + id.toString(), optionRequete).pipe(
       tap(data => console.log('coupon by id: ' + JSON.stringify(data))),
       catchError(this.handleError)
     );
-    
-    
+
+
 
 
   }
@@ -31,11 +31,15 @@ export class CouponService {
     );
   }
   getCouponsByUser(): Observable<CouponByUser[]> {
-    return this.http.get<CouponByUser[]>("http://109.11.21.53:9996/api/couponbyuser/all",optionRequete ).pipe(
+    return this.http.get<CouponByUser[]>("http://109.11.21.53:9996/api/couponbyuser/all", optionRequete).pipe(
       tap(data => console.log('All coupons by user: ' + JSON.stringify(data))),
       catchError(this.handleError)
     )
 
+  }
+  addCouponByuser(idUser, idCoupon): Observable<Object> {
+    let URL = "http://109.11.21.53:9996/api/couponbyuser/add?idUser=" + idUser + "&idCoupon=" + idCoupon
+    return this.http.post(URL, {}, optionRequetePost);
   }
 
   private handleError(err: HttpErrorResponse) {
@@ -55,8 +59,16 @@ export class CouponService {
 const API = "http://109.11.21.53:9996/api/coupon/all";
 const x = btoa("DR567Kle_i:2Kjl9-(kl")
 const optionRequete = {
-  headers: new HttpHeaders({ 
-    'Authorization': 'Basic '+x
-    
-    
-  })};
+  headers: new HttpHeaders({
+    'Authorization': 'Basic ' + x
+
+
+  })
+};
+
+const optionRequetePost = {
+  responseType: 'text' as 'json',
+  headers: new HttpHeaders({
+    'Authorization': 'Basic ' + x
+  })
+};

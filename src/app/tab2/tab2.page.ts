@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-//import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
-// import { BarcodeScanner} from '@ionic-native/qr-scanner';
-// import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
-//import { Dialogs } from '@ionic-native/dialogs/ngx';
+import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
+import { CouponService } from '../coupon.service';
+import { Platform } from '@ionic/angular';
+import { Coupon } from '../types';
+// import { Dialogs} from '@ionic-native/dialogs/ngx'
 //import { HTTP } from '@ionic-native/http';
 //import { Observable } from 'rxjs';
 
@@ -13,168 +14,133 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page implements OnInit {
-    ngOnInit() {
-
-        //this.showCamera = false;
-
-    }
 
 
-    /* qrData = null;
+
+    qrData = null;
+    qrScan:any;
     scannedCode = null;
     showCamera = false;
     useLight = false;
     coupons = [];
+    couponService: CouponService
 
-    constructor(private qrScanner: QRScanner, public http: HTTP) {
+    constructor(public platforme:Platform,private qrScanner: QRScanner, couponService: CouponService) {
         this.showCamera = false;
-        this.getAllCouponByUser();
+        this.couponService = couponService
+        this.platforme.backButton.subscribeWithPriority(0,()=>{
+            // document.getElementsByTagName("body")[0].style.visibility = "visible";
+            (window.document.querySelector('ion-app') as HTMLElement).classList.remove('cameraView');
+            this.qrScan.unsubscribe();
+            this.closeCamera();
+        })
+    }
+
+    ngOnInit() {
+
+        this.scanCode()
 
     }
 
-    
-
-
-
     scanCode() {
         this.showCamera = true;
-
+        console.log("Début scann");
         // document.getElementById("cameraStuff").style.visibility = "visible";
+        // document.getElementById("background-content").style.display = "none";
         // document.getElementById("cameraHidden").style.visibility = "hidden";
-
+        (window.document.querySelector('ion-app') as HTMLElement).classList.add('cameraView');
+        // (window.document.querySelector('#qrlogo') as HTMLElement).style.visibility = "visible !important"
+        // document.getElementById("background-content").style.visibility = "hidden";
         this.qrScanner.prepare().then((status: QRScannerStatus) => {
             if (status.authorized) {
                 this.qrScanner.show();
-
-                let scan = this.qrScanner.scan().subscribe((qrScannerData: String) => {
-
-                    // this.dialogs.alert(qrScannerData);
+                // document.getElementsByTagName("body")[0].style.visibility = "hidden";
+                console.log("show ok")
+                this.qrScan = this.qrScanner.scan().subscribe((qrScannerData: String) => {
+                    this.closeCamera()
+                    this.showCamera = false;
+                    console.log("SCANNER TROUVE")
+                    // document.getElementsByTagName("body")[0].style.visibility = "visible";
                     this.scannedCode = qrScannerData;
                     this.scannedCode = this.scannedCode.result;
-                    // console.dir(this.scannedCode)
-                    // alert("Code : " + this.scannedCode.result)
-                    this.qrScanner.hide();
-                    scan.unsubscribe(); // stop scanning
-                    this.showCamera = false;
-                    this.getCoupon(this.scannedCode);
+                    console.log("Code coupon : " + this.scannedCode)
+
+                    // this.dialogs.alert(this.scannedCode)
+                    try{
+                        this.couponService.getCoupon(this.scannedCode).subscribe(Obcoupon =>{
+                            console.log("Coupon description : " + Obcoupon.description)
+                            console.log("call add coupon")
+                            this.addCouponByUser(Obcoupon.code)
+                        });
+                           
+                    }                 
+                    catch{
+                        console.log("Erreur dans la récupération du coupon")
+                    }
+                    finally{
+                        console.log("closing camera")
+                    }
                 })
             }
             else {
-                this.qrScanner.hide();
                 this.scannedCode = "None";
-                this.showCamera = false;
+                this.closeCamera()
+
             }
 
         })
     }
 
     closeCamera() {
-        // this.dialogs.alert("closed !")
+        // document.getElementById("background-content").style.visibility = "visible";
+        (window.document.querySelector('ion-app') as HTMLElement).classList.remove('cameraView');
+        // document.getElementById("qrlogo").style.visibility = "hidden !important"
+
         this.showCamera = false;
+        this.qrScan.unsubscribe(); // stop scanning
         this.qrScanner.hide(); // hide camera preview
         this.qrScanner.destroy();
+        // document.getElementById("background-content")[0].style.display = "block";
+        // window.document.body.style.backgroundColor = '#FFF';
+
     }
 
     addLight() {
-        if (this.useLight == false) {
-            this.useLight = true;
-            this.qrScanner.enableLight();
+        try{
+            if (this.useLight == false) {
+                this.useLight = true;
+                this.qrScanner.enableLight();
+            }
+            else {
+                this.useLight = false;
+                this.qrScanner.disableLight();
+            }
         }
-        else {
-            this.useLight = false;
-            this.qrScanner.disableLight();
+        catch{
+            console.log("Impossible d'activer la lumière.")
         }
     }
 
-    getCoupon(urlText) {
-        // let headerRequete = { 'Content-Type': 'application/x-www-form-urlencoded' }
-        this.http.get(urlText, {}, {}).then(data => {
-
-            let reponse = JSON.parse(data.data)
-
-            this.scannedCode = reponse.code_value;
-            // this.coupons.push(reponse)
-            this.addCouponByUser("camille@yopmail.com", reponse.code);
-
-
-        })
-            .catch(error => {
-                alert("Erreur get coupon : " + error.error)
-                console.dir(error)
-                // console.log(error.status);
-                // console.log(error.error); // error message as string
-                // console.log(error.headers);
-
-            });
-    }
-
-    addCouponByUser(userId, couponId) {
-        alert(userId + " " + couponId)
-        this.http.post('http://109.11.21.53:9996/couponbyuser/add?idUser='+String(userId)+'&idCoupon='+String(couponId),
-            {
-                // idUser: userId,
-                // idCoupon: couponId
-            },
-            {
-                "Content-type": "application/json"
-            })
-            .then(data => {
-                console.log(data.data)
-                if(data.data == "Saved"){
-                    alert("Le coupon a bien été ajouté.")
-                    this.getAllCouponByUser(userId)
+    addCouponByUser(couponId) {
+        let userId = localStorage.getItem("login")
+        userId = "camille@mail.com"
+        console.log("Add coupon by user infos : " + userId + " " + couponId)
+        try{
+            this.couponService.addCouponByuser(userId, couponId).subscribe(rep=>{
+                console.log(rep)
+                if(rep == "Saved"){
+                    alert("Code ajouté")
                 }
                 else{
-                    alert("Une erreur est survenue.")
+                    alert("Impossible d'ajouter le code")
                 }
-            }).catch(error => {
-                console.log(error.status);
-                alert("error user coupon : " + error.status)
-            });
+            })
+
+            
+        }
+        catch{
+            console.log("Erreur dans l'ajout du coupon")
+        }
     }
 
-    getAllCouponByUser(userId="camille@yopmail.com"){
-    
-        this.coupons = []
-
-        this.http.get("http://109.11.21.53:9996/couponbyuser/all", {}, {}).then(async data => {
-
-            let reponse = JSON.parse(data.data)
-            console.log(reponse)
-            for (const coup of reponse) {
-                console.log("Coupon : " + coup)
-                if(coup.idUser == userId){
-                    console.log(1)
-                    let coupon = await this.getCouponInfo(coup.idCoupon)
-                    console.log(3)
-                    console.log("Actual coupon : " + JSON.parse(coupon))
-                    this.coupons.push(JSON.parse(coupon))
-                    console.log(this.coupons)
-                }
-            }
-
-        })
-            .catch(error => {
-                alert("Erreur récup coupons : " + error.error)
-                console.dir(error)
-
-            });
-
-    }
-
-    getCouponInfo(idCoupon):any{
-        this.http.get("http://109.11.21.53:9996/coupon/"+idCoupon, {}, {}).then(data => {
-
-            let reponse = data.data
-            console.log(2)
-            console.log("REPONSE : " + reponse) 
-            return reponse
-
-        })
-            .catch(error => {
-                alert("Erreur récup info coupon : " + error.error)
-                console.dir(error)
-                return null;
-            });
-    } */
 }

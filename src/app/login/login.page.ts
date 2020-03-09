@@ -17,8 +17,9 @@ export class LoginPage implements OnInit {
   errorMessage: string = '';
   user: User = null
 
-  constructor(private navCtrl: NavController, private formBuilder: FormBuilder, private userService: UserService,private alert:AlertController) {
-
+  constructor(private navCtrl: NavController, private formBuilder: FormBuilder, private userService: UserService, private alert: AlertController) {
+    let hide = document.getElementById("logged")
+    hide.style.visibility = "hidden";
 
   }
 
@@ -55,24 +56,27 @@ export class LoginPage implements OnInit {
     var hash = sha256.create();
     hash.update(password);
     hash.hex();
-    this.userService.login(email).subscribe(value => {
-      this.user = value
-      if(this.user == null){
-        this.alertUserInconnu()
-        this.navCtrl.navigateForward('/tabs/register');
-      }
-      
-      else if (this.user.password == hash.toString()) {
-        localStorage.setItem("login",email)
-        this.navCtrl.navigateForward('/tabs/tab2');
-      }
-      else{
-        this.alertUserInconnu()
-      }
-     
-    })
-    
-    
+    try {
+      this.userService.login(email).subscribe(value => {
+        this.user = value
+        if (this.user == null) {
+          this.alertUserInconnu()
+          this.navCtrl.navigateForward('/tabs/register');
+        }
+
+        else if (this.user.password == hash.toString()) {
+          localStorage.setItem("login", email)
+          this.navCtrl.navigateForward('/tabs/tab2');
+          let hide = document.getElementById("logged")
+          hide.style.visibility = "visible"
+        }
+      })
+    }
+    catch (error) {
+      this.alertUserInconnu()
+    }
+
+
 
   }
   async alertUserInconnu() {

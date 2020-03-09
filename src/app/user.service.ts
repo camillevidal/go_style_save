@@ -22,10 +22,16 @@ export class UserService {
   }
 
   login(email): Observable<User> {
-    return this.http.get<User>(`http://109.11.21.53:9996/api/user/${email}`, optionRequete);
+    let t;
+    try {
+      t = this.http.get<User>(`http://109.11.21.53:9996/api/user/${email}`, optionRequete)
+    } catch (error) {
+      throw "unknow user";
+    }
+    return t
   }
 
-  addUser(email, fullName, password):Observable<Object>{
+  addUser(email, fullName, password): Observable<Object> {
     let hash = sha256.create();
     hash.update(password);
     hash.hex();
@@ -65,6 +71,7 @@ const optionRequete = {
 
 const optionRequetePost = {
   responseType: 'text' as 'json',
-  headers: new HttpHeaders({ 
-    'Authorization': 'Basic '+x
-  })};
+  headers: new HttpHeaders({
+    'Authorization': 'Basic ' + x
+  })
+};
