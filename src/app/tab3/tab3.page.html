@@ -6,32 +6,38 @@
   </ion-toolbar>
 </ion-header>
 
+<ion-content>
+  <ion-refresher slot="fixed" ion-refresh-native (ionRefresh)="loadCouponsByUser($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+      refreshingText="Chargement..."></ion-refresher-content>
+  </ion-refresher>
+  <div *ngIf="couponList.length>0">
 
-<ion-content [fullscreen]="true" *ngIf="couponList.length>0">
-  <ion-card *ngFor="let coupon of couponList">
-    <ion-item>
-      <ion-icon color="warning" name="card-outline" style="margin-right: 10px;"></ion-icon>
-      
-      <ion-label color="dark" style="font-size:20px; font-style: bold;">{{coupon.description}}</ion-label>
-      <ion-button class="btn-coupon-detail" fill="outline" slot="end" [routerLink]="['coupon',coupon.code]">Voir coupon</ion-button>
-    </ion-item>
-  
-    <ion-card-content>
-      <ion-chip color="warning">
-        <ion-icon name="time-outline"></ion-icon>
-        <ion-label color="dark">{{coupon.startDate}} - {{coupon.endDate}} </ion-label>
-      </ion-chip>
-      <ion-chip color="warning">
-        <ion-icon name="cart-outline" ></ion-icon>
-        <ion-label color=dark> - {{coupon.reductionAmount}} {{coupon.devise}}</ion-label>
-      </ion-chip>
-    </ion-card-content>
-  </ion-card>
-  
-</ion-content>
-<ion-item *ngIf="couponList.length== 0" color="danger" lines="none" style="margin-bottom: 30px;">
-  
+    <ion-card *ngFor="let coupon of couponList">
+      <ion-item>
+        <ion-icon color="warning" name="card-outline" style="margin-right: 10px;"></ion-icon>
+
+        <ion-label color="dark" style="font-size:20px; font-style: bold;">{{coupon.description}}</ion-label>
+        <ion-button class="btn-coupon-detail" fill="outline" slot="end" [routerLink]="['coupon',coupon.code]">Voir
+          coupon</ion-button>
+      </ion-item>
+
+      <ion-card-content>
+        <ion-chip color="warning">
+          <ion-icon name="time-outline"></ion-icon>
+          <ion-label color="dark">{{coupon.startDate}} - {{coupon.endDate}} </ion-label>
+        </ion-chip>
+        <ion-chip color="warning">
+          <ion-icon name="cart-outline"></ion-icon>
+          <ion-label color=dark> - {{coupon.reductionAmount}} {{coupon.devise}}</ion-label>
+        </ion-chip>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <ion-item *ngIf="couponList.length== 0" color="danger" lines="none" style="margin-bottom: 30px;">
+
     <ion-label style="text-align:center;" id="no-coupons">Vous n'avez pas de coupons</ion-label>
- 
-</ion-item>
 
+  </ion-item>
+</ion-content>
