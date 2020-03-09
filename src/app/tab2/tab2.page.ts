@@ -35,9 +35,11 @@ export class Tab2Page implements OnInit {
     }
     ionViewDidEnter() {
         this.scanCode()
+        document.getElementById("appLogout").style.visibility = "hidden"
     }
     ionViewDidLeave() {
         this.closeCamera()
+        document.getElementById("appLogout").style.visibility = "visible"
 
     }
 

@@ -16,17 +16,17 @@ export class TabsPage {
   async logout() {
     const alert = await this.alertController.create({
       header: 'Confirm!',
-      message: 'Message <strong>Voulez vous, vous déconnecter ?</strong>!!!',
+      message: '<strong>Voulez vous, vous déconnecter ?</strong>',
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Annuler',
           role: 'cancel',
           cssClass: 'secondary',
           handler: (blah) => {
             console.log('Confirm Cancel: blah');
           }
         }, {
-          text: 'Okay',
+          text: 'Confirmer',
           handler: () => {
             this.goToLogin()
           }
