@@ -24,11 +24,7 @@
     <ion-button expand="block" id="scanQrButton" icon-left (click)="scanCode()">
       <ion-icon name="qr-code-outline"></ion-icon>&nbsp;Scan Code
     </ion-button>
-    <!-- <ion-card *ngIf="scannedCode && !showCamera">
-      <ion-card-content>
-        <p>Code de réduction: {{ scannedCode }}</p>
-      </ion-card-content>
-    </ion-card> -->
+
     <ion-card *ngIf="coupons?.length <= 0">
       <ion-item ><a>Vous n'avez aucun code pour le moment.</a></ion-item>
     </ion-card>
