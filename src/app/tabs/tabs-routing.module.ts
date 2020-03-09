@@ -35,13 +35,14 @@ const routes: Routes = [
             loadChildren: () =>
               import('../tab3/tab3.module').then(m => m.Tab3PageModule)
           },
+          {
+            path: 'coupon/:couponId',
+            loadChildren: () => import('../coupon/coupon.module').then(m => m.CouponPageModule)
+          }
 
         ]
       },
-      {
-        path: 'coupon/:couponId',
-        loadChildren: () => import('../coupon/coupon.module').then(m => m.CouponPageModule)
-      },
+      
       {
         path: 'coupon',
         loadChildren: () => import('../coupon/coupon.module').then(m => m.CouponPageModule)

@@ -5,6 +5,7 @@ import { UserService } from '../user.service';
 import { User } from 'src/user';
 import { sha256 } from 'js-sha256';
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -16,7 +17,7 @@ export class LoginPage implements OnInit {
   errorMessage: string = '';
   user: User = null
 
-  constructor(private navCtrl: NavController, private formBuilder: FormBuilder, private userService: UserService) {
+  constructor(private navCtrl: NavController, private formBuilder: FormBuilder, private userService: UserService,private alert:AlertController) {
 
 
   }
@@ -57,7 +58,7 @@ export class LoginPage implements OnInit {
     this.userService.login(email).subscribe(value => {
       this.user = value
       if(this.user == null){
-        alert("Utilisateur inconnu")
+        this.alertUserInconnu()
         this.navCtrl.navigateForward('/tabs/register');
       }
       
@@ -66,13 +67,23 @@ export class LoginPage implements OnInit {
         this.navCtrl.navigateForward('/tabs/tab2');
       }
       else{
-        alert("erreur sur les identifiants")
+        this.alertUserInconnu()
       }
      
     })
     
     
 
+  }
+  async alertUserInconnu() {
+    const alert = await this.alert.create({
+      header: 'Alert',
+      subHeader: 'Subtitle',
+      message: "Problème lors de l'authentification.",
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 
   goToRegisterPage() {
