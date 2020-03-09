@@ -7,3 +7,8 @@ ion-app.cameraView #background-content, ion-app.cameraView, ion-app.cameraView i
     background: transparent none !important;
     visibility: hidden;
   }
+
+ion-app.cameraView #showCam{
+  visibility: inherit;
+  display: block;
+}

@@ -39,11 +39,10 @@ export class CouponService {
 
   }
 
-  addCouponByuser(idUser, idCoupon): Observable<CouponByUser[]> {
-    console.log("Adding coupon user : " + idUser + " coupon : "+ idCoupon)
-    return this.http.post<CouponByUser[]>("http://109.11.21.53:9996/api/couponbyuser/add?idUser="+idUser+"&idCoupon="+idCoupon,({}),(optionRequete));
+  addCouponByuser(idUser, idCoupon):Observable<Object>{
+    let URL = "http://109.11.21.53:9996/api/couponbyuser/add?idUser="+idUser+"&idCoupon="+idCoupon
+    return this.http.post(URL,{},optionRequetePost);
   }
-
 
 
   private handleError(err: HttpErrorResponse) {
@@ -66,5 +65,10 @@ const optionRequete = {
   headers: new HttpHeaders({ 
     'Authorization': 'Basic '+x
     
-    
+  })};
+
+const optionRequetePost = {
+  responseType: 'text' as 'json',
+  headers: new HttpHeaders({ 
+    'Authorization': 'Basic '+x
   })};

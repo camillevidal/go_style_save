@@ -38,6 +38,8 @@ export class Tab2Page implements OnInit {
 
     ngOnInit() {
 
+        this.scanCode()
+
     }
 
     scanCode() {
@@ -55,6 +57,7 @@ export class Tab2Page implements OnInit {
                 // document.getElementsByTagName("body")[0].style.visibility = "hidden";
                 console.log("show ok")
                 this.qrScan = this.qrScanner.scan().subscribe((qrScannerData: String) => {
+                    this.closeCamera()
                     this.showCamera = false;
                     console.log("SCANNER TROUVE")
                     // document.getElementsByTagName("body")[0].style.visibility = "visible";
@@ -63,20 +66,19 @@ export class Tab2Page implements OnInit {
                     console.log("Code coupon : " + this.scannedCode)
 
                     // this.dialogs.alert(this.scannedCode)
-                    alert("Code : " + this.scannedCode.result)
                     try{
-                        alert("test")
                         this.couponService.getCoupon(this.scannedCode).subscribe(Obcoupon =>{
-                            alert(Obcoupon.description)
-                            this.addCouponByUser(this.scannedCode)
+                            console.log("Coupon description : " + Obcoupon.description)
+                            console.log("call add coupon")
+                            this.addCouponByUser(Obcoupon.code)
                         });
                            
                     }                 
                     catch{
-                        alert("Erreur dans la récupération du coupon")
+                        console.log("Erreur dans la récupération du coupon")
                     }
                     finally{
-                        alert("closing camera")
+                        console.log("closing camera")
                     }
                 })
             }
@@ -122,12 +124,22 @@ export class Tab2Page implements OnInit {
     addCouponByUser(couponId) {
         let userId = localStorage.getItem("login")
         userId = "camille@mail.com"
-        alert(userId + " " + couponId)
+        console.log("Add coupon by user infos : " + userId + " " + couponId)
         try{
-            this.couponService.addCouponByuser(userId, couponId)
+            this.couponService.addCouponByuser(userId, couponId).subscribe(rep=>{
+                console.log(rep)
+                if(rep == "Saved"){
+                    alert("Code ajouté")
+                }
+                else{
+                    alert("Impossible d'ajouter le code")
+                }
+            })
+
+            
         }
         catch{
-            alert("Erreur dans l'ajout du coupon")
+            console.log("Erreur dans l'ajout du coupon")
         }
     }
 

@@ -35,4 +35,5 @@ export class TabsPage {
   goToLogin(){
     this.navCtrl.navigateForward('/login');
   }
+
 }
