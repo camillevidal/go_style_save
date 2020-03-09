@@ -35,25 +35,26 @@ const routes: Routes = [
             loadChildren: () =>
               import('../tab3/tab3.module').then(m => m.Tab3PageModule)
           },
-          {
-            path: 'coupon/:couponId',
-            loadChildren: () => import('../coupon/coupon.module').then( m => m.CouponPageModule)
-          },
-          {
-            path: 'coupon',
-            loadChildren: () => import('../coupon/coupon.module').then( m => m.CouponPageModule)
-          },
-          {
-            path: 'login',
-            loadChildren: () => import('../login/login.module').then( m => m.LoginPageModule)
-          },
-          {
-            path: 'register',
-            loadChildren: () => import('../register/register.module').then( m => m.RegisterPageModule)
-          }
+
         ]
       },
-     
+      {
+        path: 'coupon/:couponId',
+        loadChildren: () => import('../coupon/coupon.module').then(m => m.CouponPageModule)
+      },
+      {
+        path: 'coupon',
+        loadChildren: () => import('../coupon/coupon.module').then(m => m.CouponPageModule)
+      },
+      {
+        path: 'login',
+        loadChildren: () => import('../login/login.module').then(m => m.LoginPageModule)
+      },
+      {
+        path: 'register',
+        loadChildren: () => import('../register/register.module').then(m => m.RegisterPageModule)
+      },
+
       {
         path: '',
         redirectTo: '/tabs/login',
@@ -72,4 +73,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class TabsPageRoutingModule {}
+export class TabsPageRoutingModule { }

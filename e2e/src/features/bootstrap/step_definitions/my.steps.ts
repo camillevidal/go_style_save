@@ -58,5 +58,5 @@ Then('I click on voir coupons',async()=>{
   await u.click()
 });
 Then('I should see pas de coupons', async () => {
-  expect(await AppPage.getCouponsListPage()).to.contain('pas de coupon');
+  expect(await AppPage.getCouponsListPage()).to.contain('pas de coupons');
 });

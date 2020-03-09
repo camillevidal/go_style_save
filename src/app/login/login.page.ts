@@ -56,12 +56,9 @@ export class LoginPage implements OnInit {
     hash.hex();
     this.userService.login(email).subscribe(value => {
       this.user = value
-      console.log("user----",this.user)
-      console.log(this.user.password == hash.toString())
-      console.log(this.user.password)
       if(this.user == null){
         alert("Utilisateur inconnu")
-        this.navCtrl.navigateForward('/register');
+        this.navCtrl.navigateForward('/tabs/register');
       }
       
       else if (this.user.password == hash.toString()) {
@@ -79,7 +76,7 @@ export class LoginPage implements OnInit {
   }
 
   goToRegisterPage() {
-    this.navCtrl.navigateForward('/register');
+    this.navCtrl.navigateForward('/tabs/register');
   }
 
 }

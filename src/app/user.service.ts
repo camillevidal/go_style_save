@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { User } from './user';
 import { catchError, tap, map } from 'rxjs/operators';
 import { sha256 } from 'js-sha256';
+import { ok } from 'assert';
 @Injectable({
   providedIn: 'root'
 })
@@ -24,36 +25,12 @@ export class UserService {
     return this.http.get<User>(`http://109.11.21.53:9996/api/user/${email}`, optionRequete);
   }
 
-  addUser(email, fullName, password) {
+  addUser(email, fullName, password):Observable<Object>{
     let hash = sha256.create();
     hash.update(password);
     hash.hex();
     let pass = hash.toString()
-    this.http.post("http://109.11.21.53:9996/api/user/",
-      {
-        "email": `${email}`,
-        "fullName": `${fullName}`,
-        "password": `${hash}`
-      },optionRequete)
-      .subscribe(
-        data => {
-          console.log("POST Request is successful ", data);
-        },
-        error => {
-
-          console.log("Error", error);
-
-        }
-
-      );
-  }
-
-  register(email, fullName, password): Observable<User> {
-    let hash = sha256.create();
-    hash.update(password);
-    hash.hex();
-    let pass = hash.toString()
-    return this.http.post<User>(`http://109.11.21.53:9996/api/user/add?email=${email}&fullname=${fullName}&password=${pass}`, ({}));
+    return this.http.post<User>(`http://109.11.21.53:9996/api/user/add?email=${email}&fullname=${fullName}&password=${pass}`, {}, optionRequetePost)
   }
 
   getCoupons(): Observable<User[]> {
@@ -85,3 +62,9 @@ const optionRequete = {
 
   })
 };
+
+const optionRequetePost = {
+  responseType: 'text' as 'json',
+  headers: new HttpHeaders({ 
+    'Authorization': 'Basic '+x
+  })};
