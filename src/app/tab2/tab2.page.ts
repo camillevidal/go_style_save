@@ -4,10 +4,6 @@ import { CouponService } from '../coupon.service';
 import { NavController, AlertController } from '@ionic/angular';
 import { Platform } from '@ionic/angular';
 import { Coupon } from '../types';
-// import { Dialogs} from '@ionic-native/dialogs/ngx'
-//import { HTTP } from '@ionic-native/http';
-//import { Observable } from 'rxjs';
-
 
 @Component({
     selector: 'app-tab2',
@@ -15,21 +11,18 @@ import { Coupon } from '../types';
     styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page implements OnInit {
-
-
-
     qrData = null;
-    qrScan:any;
+    qrScan: any;
     scannedCode = null;
     showCamera = false;
     useLight = false;
     coupons = [];
     couponService: CouponService
 
-    constructor(public platforme:Platform,private qrScanner: QRScanner, couponService: CouponService,private navCtrl: NavController,private alert: AlertController) {
+    constructor(public platforme: Platform, private qrScanner: QRScanner, couponService: CouponService, private navCtrl: NavController, private alert: AlertController) {
         this.showCamera = false;
         this.couponService = couponService
-        this.platforme.backButton.subscribeWithPriority(0,()=>{
+        this.platforme.backButton.subscribeWithPriority(0, () => {
             // document.getElementsByTagName("body")[0].style.visibility = "visible";
             (window.document.querySelector('ion-app') as HTMLElement).classList.remove('cameraView');
             this.qrScan.unsubscribe();
@@ -38,48 +31,38 @@ export class Tab2Page implements OnInit {
     }
 
     ngOnInit() {
-
+        console.log("on init")
+    }
+    ionViewDidEnter() {
         this.scanCode()
+    }
+    ionViewDidLeave() {
+        this.closeCamera()
 
     }
 
     scanCode() {
         this.showCamera = true;
-        console.log("Début scann");
-        // document.getElementById("cameraStuff").style.visibility = "visible";
-        // document.getElementById("background-content").style.display = "none";
-        // document.getElementById("cameraHidden").style.visibility = "hidden";
         (window.document.querySelector('ion-app') as HTMLElement).classList.add('cameraView');
-        // (window.document.querySelector('#qrlogo') as HTMLElement).style.visibility = "visible !important"
-        // document.getElementById("background-content").style.visibility = "hidden";
         this.qrScanner.prepare().then((status: QRScannerStatus) => {
             if (status.authorized) {
                 this.qrScanner.show();
-                // document.getElementsByTagName("body")[0].style.visibility = "hidden";
-                console.log("show ok")
                 this.qrScan = this.qrScanner.scan().subscribe((qrScannerData: String) => {
                     this.closeCamera()
                     this.showCamera = false;
-                    console.log("SCANNER TROUVE")
-                    // document.getElementsByTagName("body")[0].style.visibility = "visible";
                     this.scannedCode = qrScannerData;
                     this.scannedCode = this.scannedCode.result;
                     console.log("Code coupon : " + this.scannedCode)
-
-                    // this.dialogs.alert(this.scannedCode)
-                    try{
-                        this.couponService.getCoupon(this.scannedCode).subscribe(Obcoupon =>{
-                            console.log("Coupon description : " + Obcoupon.description)
-                            console.log("call add coupon")
+                    try {
+                        this.couponService.getCoupon(this.scannedCode).subscribe(Obcoupon => {
                             this.addCouponByUser(Obcoupon.code)
                         });
-                           
-                    }                 
+
+                    }
                     catch{
                         console.log("Erreur dans la récupération du coupon")
                     }
-                    finally{
-                        console.log("closing camera")
+                    finally {
                         this.savedCoupon()
                         this.navCtrl.navigateForward('/tabs/tab3');
                     }
@@ -93,25 +76,21 @@ export class Tab2Page implements OnInit {
             }
 
         })
-        
+
     }
 
     closeCamera() {
-        // document.getElementById("background-content").style.visibility = "visible";
         (window.document.querySelector('ion-app') as HTMLElement).classList.remove('cameraView');
-        // document.getElementById("qrlogo").style.visibility = "hidden !important"
-
         this.showCamera = false;
         this.qrScan.unsubscribe(); // stop scanning
         this.qrScanner.hide(); // hide camera preview
         this.qrScanner.destroy();
-        // document.getElementById("background-content")[0].style.display = "block";
-        // window.document.body.style.backgroundColor = '#FFF';
+
 
     }
 
     addLight() {
-        try{
+        try {
             if (this.useLight == false) {
                 this.useLight = true;
                 this.qrScanner.enableLight();
@@ -130,34 +109,32 @@ export class Tab2Page implements OnInit {
         let userId = localStorage.getItem("login")
         userId = "camille@mail.com"
         console.log("Add coupon by user infos : " + userId + " " + couponId)
-        try{
-            this.couponService.addCouponByuser(userId, couponId).subscribe(rep=>{
+        try {
+            this.couponService.addCouponByuser(userId, couponId).subscribe(rep => {
                 console.log(rep)
-                if(rep == "Saved"){
-                    //alert("Code ajouté")
+                if (rep == "Saved") {
+
                 }
-                else{
-                    //alert("Impossible d'ajouter le code")
-                }
+
             })
 
-            
+
         }
         catch{
             console.log("Erreur dans l'ajout du coupon")
         }
     }
 
-    async savedCoupon(){
+    async savedCoupon() {
         const alert = await this.alert.create({
             header: 'Alert',
             subHeader: 'Subtitle',
             message: "Coupon Ajouté",
             buttons: ['OK']
         });
-    
+
         await alert.present();
-          
+
     }
 
 }

@@ -2,15 +2,15 @@ import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss']
 })
 export class TabsPage {
-  href: string;
-
   constructor(public alertController: AlertController, private navCtrl: NavController, private router: Router) {
+
 
   }
   async logout() {
@@ -42,4 +42,5 @@ export class TabsPage {
     let hide = document.getElementById("logged")
     hide.style.visibility = "hidden"
   }
+
 }
