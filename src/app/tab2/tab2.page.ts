@@ -36,10 +36,12 @@ export class Tab2Page implements OnInit {
     ionViewDidEnter() {
         this.scanCode()
         document.getElementById("appLogout").style.visibility = "hidden"
+
     }
     ionViewDidLeave() {
         this.closeCamera()
         document.getElementById("appLogout").style.visibility = "visible"
+
 
     }
 
@@ -57,15 +59,20 @@ export class Tab2Page implements OnInit {
                     console.log("Code coupon : " + this.scannedCode)
                     try {
                         this.couponService.getCoupon(this.scannedCode).subscribe(Obcoupon => {
-                            this.addCouponByUser(Obcoupon.code)
+                            if(Obcoupon == null){
+                                throw new Error("Erreur");
+                                
+                            }
+                            else{
+                                this.addCouponByUser(Obcoupon)
+                            }
                         });
-
                     }
                     catch{
                         console.log("Erreur dans la récupération du coupon")
+                        this.alertWrongCoupon()
                     }
                     finally {
-                        this.savedCoupon()
                         this.navCtrl.navigateForward('/tabs/tab3');
                     }
                 })
@@ -79,6 +86,39 @@ export class Tab2Page implements OnInit {
 
         })
 
+    }
+
+    async alertWrongCoupon() {
+        const alert = await this.alert.create({
+          header: 'Alert',
+          subHeader: 'Subtitle',
+          message: "Coupon incorrect.",
+          buttons: ['OK']
+        });
+    
+        await alert.present();
+      }
+
+    async alertCouponSaved(coupon:Coupon) {
+        const alert = await this.alert.create({
+            header: 'Alert',
+            subHeader: 'Subtitle',
+            message: "Nouveau coupon ajouté : " + coupon.code_value,
+            buttons: ['OK']
+    });
+
+    await alert.present();
+    }
+
+    async alertCouponNoSaved() {
+    const alert = await this.alert.create({
+        header: 'Alert',
+        subHeader: 'Subtitle',
+        message: "Erreur dans l'ajout du coupon, veuillez réessayer",
+        buttons: ['OK']
+    });
+
+    await alert.present();
     }
 
     closeCamera() {
@@ -107,23 +147,24 @@ export class Tab2Page implements OnInit {
         }
     }
 
-    addCouponByUser(couponId) {
+    addCouponByUser(coupon) {
         let userId = localStorage.getItem("login")
-        userId = "camille@mail.com"
-        console.log("Add coupon by user infos : " + userId + " " + couponId)
+        console.log("Add coupon by user infos : " + userId + " " + coupon.code)
         try {
-            this.couponService.addCouponByuser(userId, couponId).subscribe(rep => {
+            this.couponService.addCouponByuser(userId, coupon.code).subscribe(rep => {
                 console.log(rep)
                 if (rep == "Saved") {
-
+                    this.alertCouponSaved(coupon)
+                }
+                else{
+                    this.alertCouponNoSaved()
                 }
 
             })
 
-
         }
         catch{
-            console.log("Erreur dans l'ajout du coupon")
+            this.alertCouponNoSaved()
         }
     }
 

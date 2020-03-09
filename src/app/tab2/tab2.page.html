@@ -16,9 +16,11 @@
     <ion-icon id="qrlogo" class="frame" name="scan-outline" style="color: red;"></ion-icon>
     <!-- <img id ="qrScannerCarre" src="../../assets/images/qrCarre.png" alt="qrScanner"> -->
     <!-- <button id="scanQrButton" ion-button full icon-left (click)="scanCode()"> -->
-    <ion-button shape="round" id="light" icon-left (click)="addLight()">
-      <ion-icon name="flashlight"></ion-icon>
-    </ion-button>
+    <div id="idFlashlight">
+      <ion-button shape="round" id="light" icon-left (click)="addLight()">
+        <ion-icon name="flashlight"></ion-icon>
+      </ion-button>
+    </div>
   </div>
   <div *ngIf="!showCamera">
     <ion-button expand="block" id="scanQrButton" icon-left (click)="scanCode()">
@@ -26,16 +28,16 @@
     </ion-button>
 
     <ion-card *ngIf="coupons?.length <= 0">
-      <ion-item ><a>Vous n'avez aucun code pour le moment.</a></ion-item>
+      <ion-item><a>Vous n'avez aucun code pour le moment.</a></ion-item>
     </ion-card>
-    <ion-card *ngIf="coupons?.length > 0" >
+    <ion-card *ngIf="coupons?.length > 0">
       <ion-item ng-repeat="coupon in coupons">
         <a>CODE : {{coupon.code_value | async }} </a>
-        <br/>
-        <br/>
+        <br />
+        <br />
         <a>DESCRIPTION : {{coupon.description | async}} </a>
-        <br/>
-        <br/>
+        <br />
+        <br />
       </ion-item>
     </ion-card>
     <div *ngIf="scannedCode"><a>{{scannedCode.result}}</a></div>

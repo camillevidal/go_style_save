@@ -52,15 +52,20 @@ export class LoginPage implements OnInit {
 
   loginUser() {
     let email = this.validations_form.get('email').value
+    email = email.toLowerCase()
     let password = this.validations_form.get('password').value
     var hash = sha256.create();
     hash.update(password);
     hash.hex();
     this.userService.login(email).subscribe(value => {
       this.user = value
+      console.log("USER : " + this.user.password)
       if (this.user == null) {
         this.alertUserInconnu()
         this.navCtrl.navigateForward('/tabs/register');
+      }
+      else if(this.user.password != hash.toString()){
+          this.alertWrongPassword()
       }
 
       else if (this.user.password == hash.toString()) {
@@ -81,8 +86,18 @@ export class LoginPage implements OnInit {
   async alertUserInconnu() {
     const alert = await this.alert.create({
       header: 'Alert',
+      message: "Utilisateur inconnu. Veuillez-vous inscrire pour accéder à l'inscription.",
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  }
+
+  async alertWrongPassword() {
+    const alert = await this.alert.create({
+      header: 'Alert',
       subHeader: 'Subtitle',
-      message: "Problème lors de l'authentification.",
+      message: "Mot de passe incorrect.",
       buttons: ['OK']
     });
 
@@ -92,5 +107,9 @@ export class LoginPage implements OnInit {
   goToRegisterPage() {
     this.navCtrl.navigateForward('/tabs/register');
   }
+
+  ionViewDidEnter() {
+    document.getElementById("appLogout").style.visibility = "hidden"
+}
 
 }

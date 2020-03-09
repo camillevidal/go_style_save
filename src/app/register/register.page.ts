@@ -59,6 +59,7 @@ export class RegisterPage implements OnInit {
 
   register() {
     this.email = this.validations_form.get('email').value
+    this.email = this.email.toLowerCase()
     this.fullName = this.validations_form.get('nom').value
     this.pass = this.validations_form.get('password').value
     this.userService.addUser(this.email, this.fullName, this.pass).subscribe(
