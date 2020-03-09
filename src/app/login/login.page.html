@@ -1,11 +1,11 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title color="warning" id="login">Login</ion-title>
+    <ion-title color="warning" id="login">Connexion</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-img src="../../assets/images/login.png" style="width:25%;height:25%;margin-top:10px;"></ion-img>
+  <ion-img src="../../assets/images/login.png" style="width:25%;height:25%;padding-top:2%;display: block; margin-left: auto; margin-right: auto;"></ion-img>
   <ion-grid>
     <ion-row>
       <ion-col>
@@ -41,7 +41,7 @@
           </div>
 
           <ion-button id="btn-connect" class="submit-btn" type="submit" [disabled]="!validations_form.valid"
-            (click)="loginUser()">Log In</ion-button>
+            (click)="loginUser()" style="margin-top: 6%;">Se connecter</ion-button>
           <label class="error-message">{{errorMessage}}</label>
         </form>
         <p class="go-to-register">
