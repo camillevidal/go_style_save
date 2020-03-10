@@ -62,16 +62,40 @@ export class Tab2Page implements OnInit {
                     this.showCamera = false;
                     this.scannedCode = qrScannerData;
                     this.scannedCode = this.scannedCode.result;
+                    this.scannedCode = atob(this.scannedCode)
+                    this.scannedCode = parseInt(this.scannedCode)
                     console.log("Code coupon : " + this.scannedCode)
                     try {
                         this.couponService.getCoupon(this.scannedCode).subscribe(Obcoupon => {
                             if(Obcoupon == null){
-                                throw new Error("Erreur");
-                                
+                                this.alertWrongCoupon()                                
                             }
                             else{
-                                this.addCouponByUser(Obcoupon)
+                                try{
+                                    this.couponService.checkCouponByUser(localStorage.getItem("login").toString()).subscribe(data=>{
+                                        let find = false
+                                        for (const coup of data) {
+                                            if(coup.code == Obcoupon.code){
+                                                find = true
+                                                break;
+                                            }
+                                        }
+                                        if(find == false){
+                                            this.addCouponByUser(Obcoupon)
+                                        }
+                                        else{
+                                            this.alertDejaCoupon()
+                                        }
+                                    })
+                                    
+                                }
+                                catch{
+                                    this.alertWrongCoupon()
+                                }
                             }
+                        },
+                        error => {
+                          this.alertWrongCoupon();
                         });
                     }
                     catch{
@@ -92,6 +116,17 @@ export class Tab2Page implements OnInit {
 
         })
 
+    }
+
+    async alertDejaCoupon(){
+        const alert = await this.alert.create({
+            header: 'Alert',
+            subHeader: 'Subtitle',
+            message: "Coupon déjà ajouté.",
+            buttons: ['OK']
+          });
+      
+          await alert.present();
     }
 
     async alertWrongCoupon() {
@@ -158,7 +193,7 @@ export class Tab2Page implements OnInit {
         console.log("Add coupon by user infos : " + userId + " " + coupon.code)
         try {
             this.couponService.addCouponByuser(userId, coupon.code).subscribe(rep => {
-                console.log(rep)
+                console.log()
                 if (rep == "Saved") {
                     this.alertCouponSaved(coupon)
                 }
@@ -166,6 +201,9 @@ export class Tab2Page implements OnInit {
                     this.alertCouponNoSaved()
                 }
 
+            },
+            error => {
+              this.alertCouponNoSaved()
             })
 
         }

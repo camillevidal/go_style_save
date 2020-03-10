@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { NavController } from '@ionic/angular';
 import { UserService } from '../user.service';
 import { AlertController } from '@ionic/angular';
+import { CouponService } from '../coupon.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -14,9 +15,10 @@ export class RegisterPage implements OnInit {
   validations_form: FormGroup;
   errorMessage: string = '';
   successMessage: string = '';
-  fullName: String
-  email: String
-  pass: String
+  fullName: string
+  email: string
+  pass: string
+  couponService: CouponService
 
   validation_messages = {
     'email': [
@@ -36,9 +38,11 @@ export class RegisterPage implements OnInit {
     private navCtrl: NavController,
     private formBuilder: FormBuilder,
     userService: UserService,
+    couponService: CouponService,
     private alert: AlertController
   ) {
     this.userService = userService
+    this.couponService = couponService
   }
 
   ngOnInit() {
@@ -65,7 +69,12 @@ export class RegisterPage implements OnInit {
     this.userService.addUser(this.email, this.fullName, this.pass).subscribe(
       data => {
         console.log("POST Request is successful ", data);
-        this.presentAlert()
+        this.couponService.addCouponByuser(this.email,1).subscribe(data=>{
+          this.presentAlert()
+          this.navCtrl.navigateForward('/tabs/login');
+        },error =>{
+          console.log("error ajout coupon register")
+        })
 
 
       },
@@ -86,7 +95,7 @@ export class RegisterPage implements OnInit {
     const alert = await this.alert.create({
       header: 'Alert',
       subHeader: 'Subtitle',
-      message: 'Profil crée avec succès.',
+      message: 'Votre compte a bien été créé. Merci de vous connecter.',
       buttons: ['OK']
     });
 

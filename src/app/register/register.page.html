@@ -44,9 +44,9 @@
     </div>
 
 
-    <ion-button class="submit-btn" type="submit" [disabled]="!validations_form.valid" color="warning" (click)="register()">Register</ion-button>
+    <ion-button class="submit-btn" type="submit" [disabled]="!validations_form.valid" color="warning" (click)="register()" style="margin-top: 6%;">Register</ion-button>
     <label class="error-message">{{errorMessage}}</label>
     <label class="success-message">{{successMessage}}</label>
   </form>
-  <ion-button class="go-to-login" color="secondary"> <a (click)="goLoginPage()">Déjà membre?</a></ion-button>
-</ion-content>
+  <ion-button class="go-to-login" color="secondary" style="margin-top: 4%;"> <a (click)="goLoginPage()" >Déjà membre?</a></ion-button>
+</ion-content>  

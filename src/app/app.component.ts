@@ -27,6 +27,11 @@ export class AppComponent {
             this.statusBar.styleDefault();
             this.splashScreen.hide();
         });
-        window.screen.orientation.lock("portrait")
+        try{
+            window.screen.orientation.lock("portrait")
+        }
+        catch{
+            
+        }
     }
 }

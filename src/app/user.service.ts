@@ -16,7 +16,7 @@ export class UserService {
   //recup une seule observable activité 
   getUser(email: string): Observable<User> {
     return this.http.get<User>("http://109.11.21.53:9996/api/user/" + email, optionRequete).pipe(
-      tap(data => console.log('Un utilisateur: ' + JSON.stringify(data))),
+      tap(data => null),
       catchError(this.handleError)
     )
   }
@@ -35,7 +35,7 @@ export class UserService {
 
   getCoupons(): Observable<User[]> {
     return this.http.get<User[]>(API, optionRequete).pipe(
-      tap(data => console.log('All users: ' + JSON.stringify(data))),
+      tap(data => null),
       catchError(this.handleError)
     );
   }

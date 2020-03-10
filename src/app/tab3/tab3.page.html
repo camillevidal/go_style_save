@@ -14,15 +14,30 @@
   <div *ngIf="couponList.length>0">
 
     <ion-card *ngFor="let coupon of couponList">
-      <ion-item>
+      <ion-item class="couponExpire" *ngIf="((date | date:'yyyy-MM-dd') > (coupon.endDate | date:'yyyy-MM-dd')) || (coupon.nbUtilisation == 0 && coupon.global == false)">
+        <ion-icon color="dark" name="close-circle-outline" style="margin-right: 10px;"></ion-icon>
+        <ion-label color="dark" class="coupontxt" style="font-size:20px; font-style: bold;">{{coupon.description}}
+        </ion-label>
+        <ion-button class="btn-coupon-detail" fill="outline" slot="end" style="color:#7a7a7a" [routerLink]="['coupon',coupon.code]">Expiré</ion-button>
+      </ion-item>
+      <ion-item *ngIf="(date | date:'yyyy-MM-dd') <= (coupon.endDate | date:'yyyy-MM-dd')">
         <ion-icon color="warning" name="card-outline" style="margin-right: 10px;"></ion-icon>
-
         <ion-label color="dark" style="font-size:20px; font-style: bold;">{{coupon.description}}</ion-label>
-        <ion-button class="btn-coupon-detail" fill="outline" slot="end" [routerLink]="['coupon',coupon.code]">Voir
-          coupon</ion-button>
+        <ion-button class="btn-coupon-detail" fill="outline" slot="end" [routerLink]="['coupon',coupon.code]">Voir coupon</ion-button>
       </ion-item>
 
-      <ion-card-content>
+      <ion-card-content class="couponExpire" *ngIf="(date | date:'yyyy-MM-dd') > (coupon.endDate | date:'yyyy-MM-dd') || (coupon.nbUtilisation == 0 && coupon.global == false)">
+        <ion-chip color="dark">
+          <ion-icon name="time-outline"></ion-icon>
+          <ion-label color="dark" class="coupontxt">{{coupon.startDate}} - {{coupon.endDate}} </ion-label>
+        </ion-chip>
+        <ion-chip color="dark">
+          <ion-icon name="cart-outline"></ion-icon>
+          <ion-label color=dark class="coupontxt"> - {{coupon.reductionAmount}} {{coupon.devise}}</ion-label>
+        </ion-chip>
+      </ion-card-content>
+
+      <ion-card-content *ngIf="(date | date:'yyyy-MM-dd') <= (coupon.endDate | date:'yyyy-MM-dd') ">
         <ion-chip color="warning">
           <ion-icon name="time-outline"></ion-icon>
           <ion-label color="dark">{{coupon.startDate}} - {{coupon.endDate}} </ion-label>
