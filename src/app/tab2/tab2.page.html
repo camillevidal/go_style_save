@@ -1,23 +1,20 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title id="hello-app">
-      Scan QR code
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark">
+    <ion-title color="warning" id="liste-coupons">
+      Scanner QR
     </ion-title>
-    <ion-buttons slot="start">
-      <ion-button *ngIf="showCamera" (click)="closeCamera()" style="color:red">
-        <ion-icon name="close"></ion-icon>
-      </ion-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding id="contentCam">
   <div *ngIf="showCamera" id="showCam">
-    <ion-icon id="qrlogo" class="frame" name="scan-outline" style="color: red;"></ion-icon>
+    <div style="position: absolute; left:15%; top:30%">
+      <ion-icon id="qrlogo" class="frame" name="scan-outline"style="font-size:256px;"></ion-icon>
+    </div>
     <!-- <img id ="qrScannerCarre" src="../../assets/images/qrCarre.png" alt="qrScanner"> -->
     <!-- <button id="scanQrButton" ion-button full icon-left (click)="scanCode()"> -->
     <div id="idFlashlight">
-      <ion-button shape="round" id="light" icon-left (click)="addLight()">
+      <ion-button shape="round" id="light" icon-left (click)="addLight()" color="dark">
         <ion-icon name="flashlight"></ion-icon>
       </ion-button>
     </div>

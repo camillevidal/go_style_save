@@ -22,12 +22,12 @@ export class Tab2Page implements OnInit {
     constructor(public platforme: Platform, private qrScanner: QRScanner, couponService: CouponService, private navCtrl: NavController, private alert: AlertController) {
         this.showCamera = false;
         this.couponService = couponService
-        this.platforme.backButton.subscribeWithPriority(0, () => {
-            // document.getElementsByTagName("body")[0].style.visibility = "visible";
-            (window.document.querySelector('ion-app') as HTMLElement).classList.remove('cameraView');
-            this.qrScan.unsubscribe();
-            this.closeCamera();
-        })
+        // this.platforme.backButton.subscribeWithPriority(0, () => {
+        //     // document.getElementsByTagName("body")[0].style.visibility = "visible";
+        //     // (window.document.querySelector('ion-app') as HTMLElement).classList.remove('cameraView');
+        //     this.closeCamera();
+        //     this.navCtrl.navigateForward('/tabs/tab3');
+        // })
     }
 
     ngOnInit() {
@@ -36,18 +36,24 @@ export class Tab2Page implements OnInit {
     ionViewDidEnter() {
         this.scanCode()
         document.getElementById("appLogout").style.visibility = "hidden"
+        var shadowroot = document.getElementById("contentCam").shadowRoot; 
+        var elem = (shadowroot.firstChild as HTMLElement)
+        elem.style.opacity = "0"
+
 
     }
     ionViewDidLeave() {
         this.closeCamera()
         document.getElementById("appLogout").style.visibility = "visible"
-
+        var shadowroot = document.getElementById("contentCam").shadowRoot; 
+        var elem = (shadowroot.firstChild as HTMLElement)
+        elem.style.opacity = "1"
 
     }
 
     scanCode() {
         this.showCamera = true;
-        (window.document.querySelector('ion-app') as HTMLElement).classList.add('cameraView');
+        // (window.document.querySelector('ion-app') as HTMLElement).classList.add('cameraView');
         this.qrScanner.prepare().then((status: QRScannerStatus) => {
             if (status.authorized) {
                 this.qrScanner.show();
@@ -122,7 +128,7 @@ export class Tab2Page implements OnInit {
     }
 
     closeCamera() {
-        (window.document.querySelector('ion-app') as HTMLElement).classList.remove('cameraView');
+        // (window.document.querySelector('ion-app') as HTMLElement).classList.remove('cameraView');
         this.showCamera = false;
         this.qrScan.unsubscribe(); // stop scanning
         this.qrScanner.hide(); // hide camera preview
