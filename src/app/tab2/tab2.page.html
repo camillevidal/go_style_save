@@ -8,7 +8,10 @@
 
 <ion-content padding id="contentCam">
   <div *ngIf="showCamera" id="showCam">
-    <div style="position: absolute; left:15%; top:30%">
+    <div *ngIf="plateformeAndroid" style="position: absolute; left:15%; top:30%">
+      <ion-icon id="qrlogo" class="frame" name="scan-outline"style="font-size:256px;"></ion-icon>
+    </div>
+    <div *ngIf="!plateformeAndroid" style="position: absolute; left:40%; top:30%">
       <ion-icon id="qrlogo" class="frame" name="scan-outline"style="font-size:256px;"></ion-icon>
     </div>
     <!-- <img id ="qrScannerCarre" src="../../assets/images/qrCarre.png" alt="qrScanner"> -->

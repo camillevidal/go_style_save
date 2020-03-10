@@ -18,16 +18,13 @@ export class Tab2Page implements OnInit {
     useLight = false;
     coupons = [];
     couponService: CouponService
+    plateformeAndroid: boolean
 
     constructor(public platforme: Platform, private qrScanner: QRScanner, couponService: CouponService, private navCtrl: NavController, private alert: AlertController) {
         this.showCamera = false;
         this.couponService = couponService
-        // this.platforme.backButton.subscribeWithPriority(0, () => {
-        //     // document.getElementsByTagName("body")[0].style.visibility = "visible";
-        //     // (window.document.querySelector('ion-app') as HTMLElement).classList.remove('cameraView');
-        //     this.closeCamera();
-        //     this.navCtrl.navigateForward('/tabs/tab3');
-        // })
+        this.plateformeAndroid = this.platforme.is("android")
+        console.log("Android : " + this.platforme.is("android"))
     }
 
     ngOnInit() {
@@ -53,18 +50,16 @@ export class Tab2Page implements OnInit {
 
     scanCode() {
         this.showCamera = true;
-        // (window.document.querySelector('ion-app') as HTMLElement).classList.add('cameraView');
         this.qrScanner.prepare().then((status: QRScannerStatus) => {
             if (status.authorized) {
                 this.qrScanner.show();
                 this.qrScan = this.qrScanner.scan().subscribe((qrScannerData: String) => {
-                    this.closeCamera()
-                    this.showCamera = false;
                     this.scannedCode = qrScannerData;
                     this.scannedCode = this.scannedCode.result;
                     this.scannedCode = atob(this.scannedCode)
                     this.scannedCode = parseInt(this.scannedCode)
-                    console.log("Code coupon : " + this.scannedCode)
+                    this.closeCamera()
+                    this.showCamera = false;
                     try {
                         this.couponService.getCoupon(this.scannedCode).subscribe(Obcoupon => {
                             if(Obcoupon == null){
@@ -78,6 +73,8 @@ export class Tab2Page implements OnInit {
                                             if(coup.code == Obcoupon.code){
                                                 find = true
                                                 break;
+                                            }else{
+                                                continue;
                                             }
                                         }
                                         if(find == false){
@@ -86,6 +83,8 @@ export class Tab2Page implements OnInit {
                                         else{
                                             this.alertDejaCoupon()
                                         }
+                                    }, error=>{
+                                        this.alertCouponNoSaved()
                                     })
                                     
                                 }
@@ -99,7 +98,6 @@ export class Tab2Page implements OnInit {
                         });
                     }
                     catch{
-                        console.log("Erreur dans la récupération du coupon")
                         this.alertWrongCoupon()
                     }
                     finally {
@@ -163,7 +161,6 @@ export class Tab2Page implements OnInit {
     }
 
     closeCamera() {
-        // (window.document.querySelector('ion-app') as HTMLElement).classList.remove('cameraView');
         this.showCamera = false;
         this.qrScan.unsubscribe(); // stop scanning
         this.qrScanner.hide(); // hide camera preview
@@ -176,7 +173,10 @@ export class Tab2Page implements OnInit {
         try {
             if (this.useLight == false) {
                 this.useLight = true;
-                this.qrScanner.enableLight();
+                this.qrScanner.enableLight().catch(error =>{
+                    this.errorLight();
+                    this.useLight = false;
+                });
             }
             else {
                 this.useLight = false;
@@ -184,18 +184,18 @@ export class Tab2Page implements OnInit {
             }
         }
         catch{
-            console.log("Impossible d'activer la lumière.")
+            this.errorLight();
         }
     }
 
     addCouponByUser(coupon) {
         let userId = localStorage.getItem("login")
-        console.log("Add coupon by user infos : " + userId + " " + coupon.code)
         try {
             this.couponService.addCouponByuser(userId, coupon.code).subscribe(rep => {
-                console.log()
                 if (rep == "Saved") {
                     this.alertCouponSaved(coupon)
+                    this.scannedCode = null
+                    this.qrScan = null
                 }
                 else{
                     this.alertCouponNoSaved()
@@ -217,6 +217,18 @@ export class Tab2Page implements OnInit {
             header: 'Alert',
             subHeader: 'Subtitle',
             message: "Coupon Ajouté",
+            buttons: ['OK']
+        });
+
+        await alert.present();
+
+    }
+
+    async errorLight() {
+        const alert = await this.alert.create({
+            header: 'Alert',
+            subHeader: 'Subtitle',
+            message: "Impossible d'activer la lumière.",
             buttons: ['OK']
         });
 
