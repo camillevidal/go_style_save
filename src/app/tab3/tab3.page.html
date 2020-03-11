@@ -8,7 +8,7 @@
 
 <ion-content>
   <ion-refresher slot="fixed" ion-refresh-native (ionRefresh)="loadCouponsByUser($event)">
-    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Tirer pour rafraîchir" refreshingSpinner="circles"
       refreshingText="Chargement..."></ion-refresher-content>
   </ion-refresher>
   <div *ngIf="couponList.length>0">

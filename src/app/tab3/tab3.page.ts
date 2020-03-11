@@ -54,8 +54,7 @@ export class Tab3Page {
                     if (coupon.idUser == currentUser) {
                         this.idCoupon = coupon.idCoupon
                         this.couponService.getCoupon(this.idCoupon).subscribe(result => {
-
-                            this.couponList.push(result)
+                            this.couponList.push(result)    
                             if (refresher) {
                                 refresher.target.complete()
                             }
